@@ -63,9 +63,10 @@ static int authenticate_env_user(request_rec *r)
     r->user = env_user;
     
     if(!env_user){
+    	int i;
     	ap_log_rerror(APLOG_MARK, APLOG_ERR, 0, r,
                       "env variable %s not found", conf->env_variable);
-        for(int i=0;environ[i]!=NULL;i++){
+        for(i=0;environ[i]!=NULL;i++){
     		ap_log_rerror(APLOG_MARK, APLOG_ERR, 0, r,
                       "\t", environ[i]);
         }
