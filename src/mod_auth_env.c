@@ -66,10 +66,10 @@ static int authenticate_env_user(request_rec *r)
     auth_env_config_rec *conf = ap_get_module_config(r->per_dir_config,
                                                        &auth_env_module);
                                                        
-    char *env_user = apr_table_get(r->subprocess_env,conf->env_variable);
+    const char *env_user = apr_table_get(r->subprocess_env,conf->env_variable);
     
     /* set the user */
-    r->user = env_user;
+    r->user = (char*)env_user;
     
     if(!env_user){
     	ap_log_rerror(APLOG_MARK, APLOG_ERR, 0, r,
