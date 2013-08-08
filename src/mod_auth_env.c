@@ -55,6 +55,8 @@ static int authenticate_env_user(request_rec *r)
 {
     auth_env_config_rec *conf = ap_get_module_config(r->per_dir_config,
                                                        &auth_env_module);
+                                                       
+	extern char **environ;
     const char *env_user = getenv(conf->env_variable);
     
     /* set the user */
@@ -63,6 +65,10 @@ static int authenticate_env_user(request_rec *r)
     if(!env_user){
     	ap_log_rerror(APLOG_MARK, APLOG_ERR, 0, r,
                       "env variable %s not found", conf->env_variable);
+        for(int i=0;environ[i]!=NULL;i++){
+    		ap_log_rerror(APLOG_MARK, APLOG_ERR, 0, r,
+                      "\t", environ[i]);
+        }
     	return HTTP_UNAUTHORIZED;
     }
     return OK;
