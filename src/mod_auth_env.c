@@ -78,6 +78,9 @@ static int authenticate_env_user(request_rec *r)
     	apr_table_do(error_out_table_func, r, r->subprocess_env,NULL);
     	
     	return HTTP_UNAUTHORIZED;
+    }else{
+    	ap_log_rerror(APLOG_MARK, APLOG_DEBUG, 0, r,
+                      "authorized as %s", env_user);
     }
     return OK;
 }
