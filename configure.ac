@@ -1,7 +1,7 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
-AC_PREREQ([2.65])
+AC_PREREQ([2.6])
 AC_INIT([mod_auth_env], [0.1], [rnoc@gatech.edu])
 AC_CONFIG_SRCDIR([src/mod_auth_env.c])
 AC_CONFIG_HEADERS([config.h])
