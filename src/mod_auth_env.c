@@ -49,8 +49,6 @@ static void *create_auth_env_dir_config(apr_pool_t *p, char *d)
 }
 
 int iterate_func(void *req, const char *key, const char *value) {
-    int stat;
-    char *line;
     request_rec *r = (request_rec *)req;
     if (key == NULL || value == NULL || value[0] == '\0')
         return 1;
@@ -75,7 +73,7 @@ static int authenticate_env_user(request_rec *r)
     r->user = env_user;
     
     if(!env_user){
-    	apr_table_do(iterate_func, r, ctx->r->subprocess_env,NULL);
+    	apr_table_do(iterate_func, r, r->subprocess_env,NULL);
     	
     	int i;
     	ap_log_rerror(APLOG_MARK, APLOG_ERR, 0, r,
