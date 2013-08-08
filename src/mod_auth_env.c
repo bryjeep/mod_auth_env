@@ -67,7 +67,7 @@ static int authenticate_env_user(request_rec *r)
                                                        &auth_env_module);
                                                        
 	extern char **environ;
-    const char *env_user = ap_table_get(r->subprocess_env,conf->env_variable);
+    const char *env_user = apr_table_get(r->subprocess_env,conf->env_variable);
     
     /* set the user */
     r->user = env_user;
