@@ -60,7 +60,7 @@ static int authenticate_env_user(request_rec *r)
     /* set the user */
     r->user = env_user;
     
-    if(!user){
+    if(!env_user){
     	ap_log_rerror(APLOG_MARK, APLOG_ERR, 0, r,
                       "env variable %s not found", conf->env_variable);
     	return HTTP_UNAUTHORIZED;
@@ -75,7 +75,7 @@ static void env_register_hooks(apr_pool_t *p)
 
 static const command_rec auth_env_cmds[] =
 {
-	AP_INIT_TAKE1("AuthEnvUsernameVariable", ap_set_string_slot, (void *) APR_OFFSETOF(auth_env_config_rec,env_variable), OR_AUTHCFG, "Define the name of the environment variable containing the username")),
+	AP_INIT_TAKE1("AuthEnvUsernameVariable", ap_set_string_slot, (void *) APR_OFFSETOF(auth_env_config_rec,env_variable), OR_AUTHCFG, "Define the name of the environment variable containing the username"),
     {NULL}
 };
 
