@@ -1,0 +1,39 @@
+LDFLAGS+=@LDFLAGS@
+LIBS+=@LIBS@
+CFLAGS+=-Wall @CPPFLAGS@ @CFLAGS@
+
+#Set a few distribution variables
+DISTNAME=@PACKAGE_NAME@-@PACKAGE_VERSION@
+DISTDIR=${DISTNAME}
+DISTBALL=${DISTNAME}.tgz
+
+#BASEFILES represents all *source* files, in the truest sense (no auto* artifacts)
+BASEFILES=src/mod_auth_env.c src/mod_auth_env.h src/Makefile.in configure.ac config.h.in Makefile.in README.md NOTES
+
+#DISTFILES represents all distributable files, including auto* artifacts and BASEFILES
+DISTFILES=configure ${BASEFILES}
+
+
+
+all install:
+	cd src && $(MAKE) $@
+
+clean:
+	cd src && $(MAKE) $@
+	rm -rf ${DISTDIR} ${DISTBALL}
+
+distclean: clean
+	cd src && $(MAKE) $@
+	rm -rf config.h config.h.in~ config.log config.status autom4te.cache Makefile 
+
+baseclean: distclean
+	rm -rf configure
+	
+dist: ${DISTBALL}
+
+${DISTBALL}:
+	rm -f ${DISTBALL}
+	mkdir ${DISTDIR}
+	cp --parents ${DISTFILES} ${DISTDIR}
+	tar -czvf ${DISTBALL} ${DISTDIR}
+	rm -rf ${DISTDIR}

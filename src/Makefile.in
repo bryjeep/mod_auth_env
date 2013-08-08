@@ -1,0 +1,19 @@
+LDFLAGS+=@LDFLAGS@
+LIBS+=@LIBS@
+CFLAGS+=-Wall @CPPFLAGS@ @CFLAGS@
+
+APXS_LIBEXECDIR:=$(shell @APXS@ -q LIBEXECDIR)
+all: mod_auth_env.la
+
+mod_auth_env.la: mod_auth_env.c mod_auth_env.h
+	@APXS@ -c ${LIBS} -Wc,"${CFLAGS} ${CPPFLAGS}" -Wl,"${LDFLAGS}" mod_auth_env.c
+
+install: mod_auth_env.la
+	if test ! -d ${DESTDIR}${APXS_LIBEXECDIR}; then mkdir -p ${DESTDIR}${APXS_LIBEXECDIR}; fi
+	@APXS@ -i -S LIBEXECDIR=${DESTDIR}${APXS_LIBEXECDIR} mod_auth_env.la
+
+clean:
+	rm -rf mod_auth_env.slo mod_auth_env.la mod_auth_env.lo .libs
+
+distclean: clean
+	rm Makefile
