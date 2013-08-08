@@ -68,7 +68,7 @@ static int authenticate_env_user(request_rec *r)
                       "env variable %s not found", conf->env_variable);
         for(i=0;environ[i]!=NULL;i++){
     		ap_log_rerror(APLOG_MARK, APLOG_ERR, 0, r,
-                      "\t", environ[i]);
+                      "\t%s", environ[i]);
         }
     	return HTTP_UNAUTHORIZED;
     }
