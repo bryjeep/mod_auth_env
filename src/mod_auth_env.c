@@ -48,7 +48,7 @@ static void *create_auth_env_dir_config(apr_pool_t *p, char *d)
     return conf;
 }
 
-int iterate_func(void *req, const char *key, const char *value) {
+int error_out_table_func(void *req, const char *key, const char *value) {
     request_rec *r = (request_rec *)req;
     if (key == NULL || value == NULL || value[0] == '\0')
         return 1;
@@ -67,21 +67,17 @@ static int authenticate_env_user(request_rec *r)
                                                        &auth_env_module);
                                                        
 	extern char **environ;
-    const char *env_user = getenv(conf->env_variable);
+    const char *env_user = ap_table_get(r->subprocess_env,conf->env_variable);
     
     /* set the user */
     r->user = env_user;
     
     if(!env_user){
-    	apr_table_do(iterate_func, r, r->subprocess_env,NULL);
-    	
-    	int i;
     	ap_log_rerror(APLOG_MARK, APLOG_ERR, 0, r,
                       "env variable %s not found", conf->env_variable);
-        for(i=0;environ[i]!=NULL;i++){
-    		ap_log_rerror(APLOG_MARK, APLOG_ERR, 0, r,
-                      "%s", environ[i]);
-        }
+
+    	apr_table_do(error_out_table_func, r, r->subprocess_env,NULL);
+    	
     	return HTTP_UNAUTHORIZED;
     }
     return OK;
