@@ -53,7 +53,7 @@ int error_out_table_func(void *req, const char *key, const char *value) {
     if (key == NULL || value == NULL || value[0] == '\0')
         return 1;
     
-	ap_log_rerror(APLOG_MARK, APLOG_ERR, 0, r,
+	ap_log_rerror(APLOG_MARK, APLOG_DEBUG, 0, r,
 	                "%s => %s\n", key, value);
     return 1;
 }
